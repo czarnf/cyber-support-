@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incidents - Healthcare Cybersecurity Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <div class="header-container">
+                <a href="dashboard.html" class="headerlink">
+                    <img src="/images/Healthcare cyber support.png" alt="Healthcare Cybersecurity Dashboard Logo" class="logo">
+                    <div class="header-text">
+                        <h1>Healthcare Cybersecurity Dashboard</h1>
+                        <p class="header-p">Incident Response</p>
+                    </div>
+                </a>
+                <nav class="navigation">
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="threats.html">Threats</a></li>
+                        <li><a href="incidents.html">Incidents</a></li>
+                        <li><a href="reports.html">Reports</a></li>
+                        <li><a href="settings.html">Settings</a></li>
+                    </ul>
+                </nav>
+                <a href="/index.html" class="logout-btn">
+                    <button class="btn btn-danger">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </button>
+                </a>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <h2>Incident Response</h2>
+            <div class="incident-dashboard">
+                <div class="map-section">
+                    <h3>Incident Map</h3>
+                    <div id="incident-map" style="height: 400px;"></div>
+                </div>
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h3>Incident Trends</h3>
+                        <canvas id="incident-trend-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Incident Severity Breakdown</h3>
+                        <canvas id="severity-chart"></canvas>
+                    </div>
+                </div>
+                <div class="data-sources">
+                    <h3>Live Data Sources</h3>
+                    <ul>
+                        <li><a href="https://www.virustotal.com/">VirusTotal</a> - Threat Intelligence & Analysis</li>
+                        <li><a href="https://isc.sans.edu/">SANS Internet Storm Center</a> - Cyber Threat Reports & Trends</li>
+                        <li><a href="https://haveibeenpwned.com/">Have I Been Pwned?</a> - Breach Information & Monitoring</li>
+                        <li><a href="https://www.shodan.io/">Shodan</a> - Internet of Things Search Engine</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="incident-response">
+                <h3>Recent Incidents</h3>
+                <div class="incident-card">
+                    <h4>SQL Injection Incident</h4>
+                    <p><strong>Date:</strong> 2024-08-17</p>
+                    <p><strong>Status:</strong> In Progress</p>
+                    <p><strong>Description:</strong> An SQL Injection attack was detected. The response team is currently mitigating the threat.</p>
+                </div>
+                <div class="incident-card">
+                    <h4>Phishing Attempt</h4>
+                    <p><strong>Date:</strong> 2024-08-15</p>
+                    <p><strong>Status:</strong> Resolved</p>
+                    <p><strong>Description:</strong> A phishing email was detected and blocked. All affected users were notified.</p>
+                </div>
+                <!-- Additional incident cards as needed -->
+            </div>
+        </div>
+
+        <footer>
+            <p>Privacy Policy ~ Terms & Conditions</p>
+            <p>&copy; 2024 Healthcare Cybersecurity Dashboard. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize map
+        var map = L.map('incident-map').setView([51.505, -0.09], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        // Example of adding a marker for an incident
+        var marker = L.marker([51.5, -0.09]).addTo(map);
+        marker.bindPopup("<b>SQL Injection Incident</b><br>In Progress").openPopup();
+
+        // Incident Trends Chart
+        var ctxTrend = document.getElementById('incident-trend-chart').getContext('2d');
+        var trendChart = new Chart(ctxTrend, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [{
+                    label: 'Number of Incidents',
+                    data: [12, 19, 3, 5, 2, 3, 9],
+                    backgroundColor: 'rgba(0, 77, 64, 0.2)',
+                    borderColor: '#004d40',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Severity Breakdown Chart
+        var ctxSeverity = document.getElementById('severity-chart').getContext('2d');
+        var severityChart = new Chart(ctxSeverity, {
+            type: 'doughnut',
+            data: {
+                labels: ['Low', 'Medium', 'High'],
+                datasets: [{
+                    label: 'Severity Level',
+                    data: [10, 20, 30],
+                    backgroundColor: [
+                        'rgba(76, 175, 80, 0.2)',
+                        'rgba(255, 193, 7, 0.2)',
+                        'rgba(244, 67, 54, 0.2)'
+                    ],
+                    borderColor: [
+                        '#4caf50',
+                        '#ffc107',
+                        '#f44336'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+    </script>
+</body>
+</html>
